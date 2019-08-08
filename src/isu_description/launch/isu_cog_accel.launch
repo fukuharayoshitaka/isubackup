@@ -1,0 +1,26 @@
+<launch>
+    <group ns="wg">
+        <param name="rate" value="50.0"/>
+        <node pkg="joy" name="joy_node" type="joy_node">
+            <param name="dev" value="/dev/input/js0"/>
+        </node>
+        <node pkg='rosserial_python' name='stgage_node' type='serial_node.py'>
+            <param name='port' value='tcp'/>
+        </node>
+        <node pkg="isu_state" name="isu_state" type="isu_state.py"/>
+        <node pkg="stgage_command" name="cogpos_to_twist" type="cogpos_twist_accel.py">
+            <param name="linear_accelscale_x" value="8.0"/>
+            <param name="linear_sccelscale_y" value="0.0"/>
+            <param name="linear_maxaccel_x" value="0.5"/>
+            <param name="linear_maxaccel_y" value="0.0"/>
+            <param name="linear_maxspeed" value="0.2"/>
+            <param name="cog_area_max_radius" value = "0.05"/>
+            <param name="deadzone_radius" value="0.0"/>
+        </node>
+        <node pkg="stgage_command" name="stg_to_cogpos" type="stgage_cogpos.py"/>
+        <node pkg="isu_ik_solver" name="ik_solver_node" type="isu_ik_solver.py"/>
+        <node pkg="rosserial_python" name="motcontroller" type="serial_node.py">
+            <param name="port" value="/dev/ttyS0"/>
+        </node>
+    </group>
+</launch>
