@@ -17,10 +17,27 @@ def ik_solver(vel,cart_angle,radius,tread,wheelr):
     r_spd = vel.linear.x * ((math.cos(cart_angle)+tread/radius * math.sin(cart_angle)) / w_perimeter) + vel.linear.y * ((math.sin(cart_angle)-tread/radius * math.cos(cart_angle))/w_perimeter)
     w_spd = vel.linear.x * (-math.sin(cart_angle) / radius) + vel.linear.y * (math.cos(cart_angle) / radius) + vel.angular.z
     g_cart_angle += w_spd / g_rate
+    
+    jyotai = A
+    if all_pre_spd/2 >= 1.0:
+        jyotai = B
+    
+    if (l_spd + r_spd)/2 < 1.0 && jyotai == A && (l_spd + r_spd - all_pre_spd) < 0 && cogx > 0.01:
+        l_spd = all_pre_spd/2 + (all_pre_spd / prepre_spd)*0.05
+        r_spd = all_pre_spd/2 + (all_pre_spd / prepre_spd)*0.05
+        
+    if jyotai == B && cogx > 0.02
+        l_spd = 1.3
+        r_spd = 1.3
+    pre_pre_spd = all_pre_spd
+    all_pre_spd = l_spd + r_spd
+    
+     
     if g_cart_angle >= 2*math.pi:
         g_cart_angle -= 2 * math.pi
     elif g_cart_angle <= -2 * math.pi:
         g_cart_angle += 2 * math.pi
+    pre_spd = (l_spd + r_spd)/2
     axes_vel = [l_spd,r_spd,-w_spd]
     return axes_vel
 
